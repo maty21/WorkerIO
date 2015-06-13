@@ -28,5 +28,11 @@
   "bugs": {
     "url": "https://github.com/maty21/WorkerIO/issues"
   },
-  "homepage": "https://github.com/maty21/WorkerIO#readme"
+  "homepage": "https://github.com/maty21/WorkerIO#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-uglify": "^1.2.0"
+  }
 }
