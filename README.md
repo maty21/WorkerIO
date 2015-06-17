@@ -1,9 +1,9 @@
 # WorkerIO
-##a simple web workers with amessaging pub/sub api  
+## a simple web workers with amessaging pub/sub api  
 
 
-###Usage instructions:
-###worker:
+### Usage instructions:
+### worker:
 * create a worker on a separated  file
 * import workerIO  lib to your worker  using ```importScripts()```  then
 
@@ -11,22 +11,23 @@
 * init workerIO ```var yourWorkerName =  IO.Worker();```
 * then call to start method you should recive your socket instance for communicating with the caller side '''
 
-        ```yourWorkerName.start(function(socket){
+```javascript
+yourWorkerName.start(function(socket){
                                  ....
                                 })
         ```
-* then within the```start```function you can recive messages by calling to ``on`` function 
-        ```javascript 
+* then within the```start```function you can recive messages by calling to ``on`` function
+        ```javascript
           socket.on("messageName",callbackFunction(Data))
-          ```            
-      
+          ```
+
 * and sending messages using ```emit``` function
    ```javascript  socket.emit("messageName","Data") ```
 
- * here is a full worker sample
+ * full worker sample code
 
 ```javascript
-\\\"testWorker.js" file 
+\\\"testWorker.js" file
 function Worker() {
   importScripts('../dist/WorkerIO.js');
   var testWorker = IO.Worker();
@@ -39,26 +40,26 @@ function Worker() {
   })
   Worker();
 ```
- 
-###caller:
+
+### caller:
 *  init workerIO caller ```var yourCallerName =  IO.Reciver("testWorker.js");```
 *  you can start processing the job on the worker by calling to ```start``` function
-      ```javascript 
-          yourCallerName.start(function(socket){
-                                ...
-                                })
-      ```
-* then within the```start```function you can recive messages by calling to ``on`` function 
-        ```javascript 
+  ```javascript
+      yourCallerName.start(function(socket){
+                            ...
+                            })
+  ```
+* then within the ```start``` function you can recive messages by calling to ``on`` function
+        ```javascript
           socket.on("messageName",callbackFunction(Data))
-          ```            
-      
+          ```
+
 * and sending messages using ```emit``` function
    ```javascript  socket.emit("messageName","Data") ```
 
- * here is a full caller sample
+ *full caller sample code
 
- 
+
 ```javascript
  var io= IO.Reciver("testWorker.js");
   io.start(function(socket){
