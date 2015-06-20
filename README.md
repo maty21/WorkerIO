@@ -2,8 +2,8 @@
 ___________________________________
 ##Messaging pub/sub api for web workers includes Parallel libary   
 
-###New: Parallel functionality  - with an abilty to send job and split it to sub workers including those features
-###     waitAny,WaitAll,broadcasting message to the subwrokers,cancel. More details below using 
+###New: **Parallel functionality**  - with an abilty to send job and split it to sub workers including those features waitAny,WaitAll,broadcasting message to the subwrokers,cancel. More details below using 
+    
 
 ### Usage instructions:
 ### worker:
