@@ -90,4 +90,77 @@ parallel.foreach([array of jobs...],function(socket,data){
         console.log("status: "+data);
       })
 ```
+* then you can register to the following events
+    * on waitAny callback you will get the workerName and the result of the worker  
+    * on waitAll callback you will get the results from all the workers  
 
+```javascript 
+parallel.waitAny(function(workerName,data){
+    //getting message when each  worker finish its job
+    console.log("WaitAny: data was procced on: "+workerName+" with result "+data);
+  }).waitAll(function(data){
+    //getting message when all the job finsh their job
+    console.log("WaitAll: data was procced with result "+data);
+  })
+ ```
+ * sending brodacast meesage to all of the workers is done using ```parallel.broadcast.emit("messageTopic",data)```
+ * you can also cancel to job during proccessing by using cancelAll ```parallel.cancelAll();```
+## full example 
+### caller:
+
+```javascript
+  //imitJob
+  var parallel= IO.Parallel("workerUnit.js");
+  //Setting  Job and creating wrokers
+  parallel.foreach([1,2,3,4,5,6,7,8],function(socket,data){
+      //communicating with a specific worker
+      socket.emit("runParallel",data);
+      socket.on("status",function(data){
+        console.log("status: "+data);
+      })
+  }).waitAny(function(workerName,data){
+    //getting message when each  worker finish its job
+    console.log("WaitAny: data was procced on: "+workerName+" with result "+data);
+  }).waitAll(function(data){
+    //getting message when all the job finsh their job
+    console.log("WaitAll: data was procced with result "+data);
+  });
+  setTimeout(function(){
+    //brodcasting message to the workers
+    parallel.broadcast.emit("broadcasting",":)")
+  }, 6000);
+
+  function stopJob() {
+    //removing all the jobs
+    parallel.cancelAll();
+  }
+```
+### worker:
+
+```javascript
+function parallelTest() {
+  importScripts('../../dist/WorkerIO.js');
+  var inter= null ;
+  var testWorker = IO.Worker();
+  testWorker.start(function(socket){
+    socket.on("runParallel",function(data){
+      console.log("runParallel: "+data);
+      calc_data(data);
+    }).on("broadcasting",function(data){
+      console.log("broadcasting: "+data);
+      });
+
+    setInterval(function () {
+      socket.emit("status","!!!Not finished yet")
+    },5000);
+    function calc_data(data) {
+      inter =  setInterval(function(){
+           var calcData = data*5
+           socket.returnResult(calcData);
+        }, data*1000);
+
+    }
+  })
+}
+parallelTest();
+```
