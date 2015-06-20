@@ -1,6 +1,8 @@
 # WorkerIO
-## a simple web workers with amessaging pub/sub api  
+___________________________________
+##Messaging pub/sub api for web workers includes Parallel libary   
 
+###New: Parallel functionality  - with an abilty to send job and split it to sub workers more details below using waitAny,WaitAll,broadcasting message to the subwrokers,cancel  
 
 ### Usage instructions:
 ### worker:
