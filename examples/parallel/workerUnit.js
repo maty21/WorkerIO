@@ -25,8 +25,7 @@ function parallelTest() {
       calc_data(data);
     }).on("broadcasting",function(data){
       console.log("broadcasting: "+data);
-      //clearInterval(inter);
-    });
+      });
 
 
     setInterval(function () {
@@ -40,9 +39,6 @@ function parallelTest() {
 
     }
   })
-
-  //Message("test","bla")
-
 }
 
 parallelTest();
