@@ -1,6 +1,6 @@
 # WorkerIO
 ___________________________________
-##Messaging pub/sub api for web workers includes Parallel libary   
+## Messaging pub/sub api for web workers includes Parallel libary   
 
 ### New: **Parallel functionality**  - with an ability to send job and split it to sub workers More details below
 ### The new parallel libary including those features:
