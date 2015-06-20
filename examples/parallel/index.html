@@ -1,0 +1,48 @@
+<html>
+<head>
+
+  <!--  <script src="../lib/Message.js" type="text/javascript"/></script>
+<script src="testWorker.js" type="text/javascript"></script>
+  <script src="../lib/WorkerIO.js" type="text/javascript"/></script>
+  <script src="../lib/reciverIO.js" type="text/javascript"/></script>
+  <script src="../lib/IO.js" type="text/javascript"/></script>-->
+  <script src="../../dist/WorkerIO.js" type="text/javascript"/></script>
+</head>
+<body>
+<div class="">
+  <h1>hi</h1>
+  <button type="button"  style="width:40px;height:20px" name="stop" onclick="stopJob()">Stop</button>
+</div>
+</body>
+
+<script>
+  console.log('hi');
+
+  //imitJob
+  var parallel= IO.Parallel("workerUnit.js");
+  //Setting  Job and creating wrokers
+  parallel.foreach([1,2,3,4,5,6,7,8],function(socket,data){
+      //communicating with a specific worker
+      socket.emit("runParallel",data);
+      socket.on("status",function(data){
+        console.log("status: "+data);
+      })
+  }).waitAny(function(workerName,data){
+    //getting message when each  worker finish its job
+    console.log("WaitAny: data was procced on: "+workerName+" with result "+data);
+  }).waitAll(function(data){
+    //getting message when all the job finsh their job
+    console.log("WaitAll: data was procced with result "+data);
+  });
+  setTimeout(function(){
+    //brodcasting message to the workers
+    parallel.broadcast.emit("broadcasting",":)")
+  }, 6000);
+
+  function stopJob() {
+    //removing all the jobs
+    parallel.cancelAll();
+  }
+
+</script>
+</html>

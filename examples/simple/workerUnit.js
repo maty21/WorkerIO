@@ -14,8 +14,8 @@
 // a();
 
 
-function a() {
-  importScripts('../dist/WorkerIO.js');
+function simpleWorker() {
+  importScripts('../../dist/WorkerIO.js');
   var testWorker = IO.Worker();
   testWorker.start(function(socket){
     socket.on("emitTest",function(data){
@@ -29,7 +29,7 @@ function a() {
 
 }
 
-a();
+simpleWorker();
 
 // var i = 0;
 //

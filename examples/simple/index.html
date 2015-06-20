@@ -6,7 +6,7 @@
   <script src="../lib/WorkerIO.js" type="text/javascript"/></script>
   <script src="../lib/reciverIO.js" type="text/javascript"/></script>
   <script src="../lib/IO.js" type="text/javascript"/></script>-->
-  <script src="../dist/WorkerIO.js" type="text/javascript"/></script>
+  <script src="../../dist/WorkerIO.js" type="text/javascript"/></script>
 </head>
 <body>
 <div class="">
@@ -15,14 +15,8 @@
 </body>
 
 <script>
-console.log('hi');
-  //var worktest= new WorkerIO("testWorker.js");
-  var io= IO.Reciver("testWorker.js");
-  // worktest.on("test",function(data){
-  //   console.log("on: "+data);
-  //   worktest.emit("emitTest","bla");
-  // });
-  // worktest.emit("emitTest","bla");
+  console.log('hi');
+  var io= IO.Reciver("workerUnit.js");
   io.start(function(socket){
     socket.on("test",function(data){
       console.log("on: "+data);

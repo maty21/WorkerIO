@@ -9,22 +9,24 @@
 
 
 * init workerIO ```var yourWorkerName =  IO.Worker();```
-* then call to start method you should recive your socket instance for communicating with the caller side '''
+*  call to start method you should recive your socket instance for communicating with the caller side
+
+
 
 ```javascript
 yourWorkerName.start(function(socket){
                                  ....
                                 })
-        ```
-* then within the```start```function you can recive messages by calling to ``on`` function
+```
+*  within the ```start``` function you can recive messages by calling to ``on`` function
         ```javascript
           socket.on("messageName",callbackFunction(Data))
           ```
 
-* and sending messages using ```emit``` function
+*  sending messages using ```emit``` function
    ```javascript  socket.emit("messageName","Data") ```
 
- * full worker sample code
+* full worker sample code
 
 ```javascript
 \\\"testWorker.js" file
@@ -43,21 +45,21 @@ function Worker() {
 
 ### caller:
 *  init workerIO caller ```var yourCallerName =  IO.Reciver("testWorker.js");```
-*  you can start processing the job on the worker by calling to ```start``` function
+*   start processing the job by calling to ```start``` function
   ```javascript
       yourCallerName.start(function(socket){
                             ...
                             })
   ```
-* then within the ```start``` function you can recive messages by calling to ``on`` function
+*  within the ```start``` function you can recive messages by calling to ``on`` function
         ```javascript
           socket.on("messageName",callbackFunction(Data))
           ```
 
-* and sending messages using ```emit``` function
+*  sending messages using ```emit``` function
    ```javascript  socket.emit("messageName","Data") ```
 
- *full caller sample code
+* full caller sample code
 
 
 ```javascript
