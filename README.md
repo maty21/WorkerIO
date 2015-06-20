@@ -105,7 +105,9 @@ parallel.waitAny(function(workerName,data){
  ```
  * sending brodacast meesage to all of the workers is done using ```parallel.broadcast.emit("messageTopic",data)```
  * you can also cancel to job during proccessing by using cancelAll ```parallel.cancelAll();```
-## full example 
+ 
+## full parallel example
+
 ### caller:
 
 ```javascript
