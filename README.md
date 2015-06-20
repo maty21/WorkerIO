@@ -2,7 +2,16 @@
 ___________________________________
 ##Messaging pub/sub api for web workers includes Parallel libary   
 
-###New: **Parallel functionality**  - with an abilty to send job and split it to sub workers including those features waitAny,WaitAll,broadcasting message to the subwrokers,cancel. More details below using 
+###New: **Parallel functionality**  - with an ability to send job and split it to sub workers More details below
+###The new parllel libary including those features:
+- [x] **pub/sub -** send and get messages from the job during proccessing
+- [x] **waitAny -** get a notification on the caller side when a sub worker finish its job with the result of the job.
+- [x] **WaitAll -** get a notification on the caller side when a the whole job is finshed includes the result of the job
+- [x] **broadcasting -**broadcasting message to the whole wrokers 
+- [x] **cancelAll -** close the workers 
+- [ ] **limiting worker numbers**- (in the next few days) an ability to limit the number of workers that will handle the job
+
+More details below under the user instructions section
     
 
 ### Usage instructions:
