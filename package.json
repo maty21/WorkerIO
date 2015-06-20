@@ -1,6 +1,6 @@
 {
   "name": "worker.io",
-  "version": "1.0.5",
+  "version": "1.2.2",
   "description": "workerio allow pub/sub and other cool features for interacting with web wrokers",
   "main": "gulpfile.js",
   "directories": {
