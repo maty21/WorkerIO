@@ -2,6 +2,8 @@
 ___________________________________
 ## Messaging pub/sub api for web workers includes Parallel libary   
 
+[![NPM](https://nodei.co/npm/worker.io.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/worker.io/)
+
 ### New: **Parallel functionality**  - with an ability to send job and split it to sub workers More details below
 ### The new parallel libary including those features:
 - [x] **pub/sub -** send and get messages from the job during proccessing
