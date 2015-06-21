@@ -1,0 +1,28 @@
+{
+  "name": "Worker.IO",
+  "version": "1.2.3",
+  "homepage": "http://maty21.github.io/WorkerIO/",
+  "authors": [
+    "maty21 <maty@example.com>"
+  ],
+  "description": "Messaging pub/sub api for web workers includes Parallel libary",
+  "main": "gulpfile.js",
+  "keywords": [
+    "pool",
+    "workers",
+    "task",
+    "parallel",
+    "threads",
+    "pub/sub",
+    "wroker",
+    "webWorkers"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
