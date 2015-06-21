@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Workerio by maty21</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Workerio</h1>
+      <h2 class="project-tagline">web workers with pub/sub api   </h2>
+      <a href="https://github.com/maty21/WorkerIO" class="btn">View on GitHub</a>
+      <a href="https://github.com/maty21/WorkerIO/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/maty21/WorkerIO/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="workerio" class="anchor" href="#workerio" aria-hidden="true"><span class="octicon octicon-link"></span></a>WorkerIO</h1>
+
+<hr>
+
+<h2>
+<a id="messaging-pubsub-api-for-web-workers-includes-parallel-libary" class="anchor" href="#messaging-pubsub-api-for-web-workers-includes-parallel-libary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Messaging pub/sub api for web workers includes Parallel libary</h2>
+
+<h3>
+<a id="new-parallel-functionality----with-an-ability-to-send-job-and-split-it-to-sub-workers-more-details-below" class="anchor" href="#new-parallel-functionality----with-an-ability-to-send-job-and-split-it-to-sub-workers-more-details-below" aria-hidden="true"><span class="octicon octicon-link"></span></a>New: <strong>Parallel functionality</strong>  - with an ability to send job and split it to sub workers More details below</h3>
+
+<h3>
+<a id="the-new-parallel-libary-including-those-features" class="anchor" href="#the-new-parallel-libary-including-those-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>The new parallel libary including those features:</h3>
+
+<ul>
+<li>[x] <strong>pub/sub -</strong> send and get messages from the job during proccessing</li>
+<li>[x] <strong>waitAny -</strong> get a notification on the caller side when a sub worker finish its job with the result of the job.</li>
+<li>[x] <strong>WaitAll -</strong> get a notification on the caller side when a the whole job is finshed includes the result of the job</li>
+<li>[x] <strong>broadcasting -</strong> broadcasting message to the whole wrokers </li>
+<li>[x] <strong>cancelAll -</strong> close the workers </li>
+<li>[ ] <strong>limiting worker numbers</strong>- (in the next few days) an ability to limit the number of workers that will handle the job</li>
+</ul>
+
+<p>More details below under the user instructions section</p>
+
+<h3>
+<a id="usage-instructions" class="anchor" href="#usage-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage instructions:</h3>
+
+<h3>
+<a id="worker" class="anchor" href="#worker" aria-hidden="true"><span class="octicon octicon-link"></span></a>worker:</h3>
+
+<ul>
+<li>create a worker on a separated  file</li>
+<li><p>import workerIO  lib to your worker  using <code>importScripts()</code>  then</p></li>
+<li><p>init workerIO <code>var yourWorkerName =  IO.Worker();</code></p></li>
+<li> call to start method you should recive your socket instance for communicating with the caller side</li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre>    yourWorkerName.<span class="pl-c1">start</span>(<span class="pl-k">function</span>(<span class="pl-smi">socket</span>){  
+                            \\body   ....    });</pre></div>
+
+<ul>
+<li> within the <code>start</code> function you can recive messages by calling to <code>on</code> function</li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre>    socket.on(<span class="pl-s"><span class="pl-pds">"</span>messageName<span class="pl-pds">"</span></span>,callbackFunction(Data))</pre></div>
+
+<ul>
+<li> sending messages using <code>emit</code> function  <code>socket.emit("messageName","Data")</code>
+</li>
+<li>full worker sample code</li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre>\\<span class="pl-s"><span class="pl-pds">"</span>testWorker.js<span class="pl-pds">"</span></span> file
+<span class="pl-k">function</span> <span class="pl-en">Worker</span>() {
+  importScripts(<span class="pl-s"><span class="pl-pds">'</span>../dist/WorkerIO.js<span class="pl-pds">'</span></span>);
+  <span class="pl-k">var</span> testWorker <span class="pl-k">=</span> <span class="pl-c1">IO</span>.Worker();
+  testWorker.<span class="pl-c1">start</span>(<span class="pl-k">function</span>(<span class="pl-smi">socket</span>){
+    socket.on(<span class="pl-s"><span class="pl-pds">"</span>emitTest<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(data);
+
+    })
+    socket.emit(<span class="pl-s"><span class="pl-pds">"</span>test<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds">"</span></span>)
+  })
+  Worker();</pre></div>
+
+<h3>
+<a id="caller" class="anchor" href="#caller" aria-hidden="true"><span class="octicon octicon-link"></span></a>caller:</h3>
+
+<ul>
+<li> init workerIO caller <code>var yourCallerName =  IO.Reciver("testWorker.js");</code>
+</li>
+<li>  start processing the job by calling to <code>start</code> function
+<code>javascript
+    yourCallerName.start(function(socket){
+                          ...      })
+</code>
+</li>
+<li><p>within the <code>start</code> function you can recive messages by calling to <code>on</code> function
+    <code>javascript
+      socket.on("messageName",callbackFunction(Data))
+</code></p></li>
+<li><p>sending messages using <code>emit</code> function
+<code>javascript  socket.emit("messageName","Data")</code></p></li>
+<li><p>full caller sample code</p></li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre> <span class="pl-k">var</span> io<span class="pl-k">=</span> <span class="pl-c1">IO</span>.Reciver(<span class="pl-s"><span class="pl-pds">"</span>testWorker.js<span class="pl-pds">"</span></span>);
+  io.<span class="pl-c1">start</span>(<span class="pl-k">function</span>(<span class="pl-smi">socket</span>){
+    socket.on(<span class="pl-s"><span class="pl-pds">"</span>test<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>on: <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+      socket.emit(<span class="pl-s"><span class="pl-pds">"</span>emitTest<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds">"</span></span>);
+    });
+    socket.emit(<span class="pl-s"><span class="pl-pds">"</span>emitTest<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds">"</span></span>);
+  });</pre></div>
+
+<h3>
+<a id="parallel" class="anchor" href="#parallel" aria-hidden="true"><span class="octicon octicon-link"></span></a>parallel:</h3>
+
+<ul>
+<li>init parallel job is done using  <code>var parallel= IO.Parallel("workerUnit.js");</code>
+</li>
+<li>in order to start a new job you should use<br>
+</li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre>parallel.foreach([array <span class="pl-k">of</span> jobs...],<span class="pl-k">function</span>(<span class="pl-smi">socket</span>,<span class="pl-smi">data</span>){
+      <span class="pl-c">//communicating with a specific worker</span>
+      socket.emit(<span class="pl-s"><span class="pl-pds">"</span>runParallel<span class="pl-pds">"</span></span>,data);
+      socket.on(<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+        <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>status: <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+      })</pre></div>
+
+<ul>
+<li>then you can register to the following events
+
+<ul>
+<li>on waitAny callback you will get the workerName and the result of the worker<br>
+</li>
+<li>on waitAll callback you will get the results from all the workers<br>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="highlight highlight-javascript"><pre>parallel.waitAny(<span class="pl-k">function</span>(<span class="pl-smi">workerName</span>,<span class="pl-smi">data</span>){
+    <span class="pl-c">//getting message when each  worker finish its job</span>
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>WaitAny: data was procced on: <span class="pl-pds">"</span></span><span class="pl-k">+</span>workerName<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">"</span> with result <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+  }).waitAll(<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+    <span class="pl-c">//getting message when all the job finsh their job</span>
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>WaitAll: data was procced with result <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+  })</pre></div>
+
+<ul>
+<li>sending brodacast meesage to all of the workers is done using <code>parallel.broadcast.emit("messageTopic",data)</code>
+</li>
+<li>you can also cancel to job during proccessing by using cancelAll <code>parallel.cancelAll();</code>
+</li>
+</ul>
+
+<h2>
+<a id="full-parallel-example" class="anchor" href="#full-parallel-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>full parallel example</h2>
+
+<h3>
+<a id="caller-1" class="anchor" href="#caller-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>caller:</h3>
+
+<div class="highlight highlight-javascript"><pre>  <span class="pl-c">//imitJob</span>
+  <span class="pl-k">var</span> parallel<span class="pl-k">=</span> <span class="pl-c1">IO</span>.Parallel(<span class="pl-s"><span class="pl-pds">"</span>workerUnit.js<span class="pl-pds">"</span></span>);
+  <span class="pl-c">//Setting  Job and creating wrokers</span>
+  parallel.foreach([<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>,<span class="pl-c1">6</span>,<span class="pl-c1">7</span>,<span class="pl-c1">8</span>],<span class="pl-k">function</span>(<span class="pl-smi">socket</span>,<span class="pl-smi">data</span>){
+      <span class="pl-c">//communicating with a specific worker</span>
+      socket.emit(<span class="pl-s"><span class="pl-pds">"</span>runParallel<span class="pl-pds">"</span></span>,data);
+      socket.on(<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+        <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>status: <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+      })
+  }).waitAny(<span class="pl-k">function</span>(<span class="pl-smi">workerName</span>,<span class="pl-smi">data</span>){
+    <span class="pl-c">//getting message when each  worker finish its job</span>
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>WaitAny: data was procced on: <span class="pl-pds">"</span></span><span class="pl-k">+</span>workerName<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">"</span> with result <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+  }).waitAll(<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+    <span class="pl-c">//getting message when all the job finsh their job</span>
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>WaitAll: data was procced with result <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+  });
+  <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span>(){
+    <span class="pl-c">//brodcasting message to the workers</span>
+    parallel.broadcast.emit(<span class="pl-s"><span class="pl-pds">"</span>broadcasting<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>:)<span class="pl-pds">"</span></span>)
+  }, <span class="pl-c1">6000</span>);
+
+  <span class="pl-k">function</span> <span class="pl-en">stopJob</span>() {
+    <span class="pl-c">//removing all the jobs</span>
+    parallel.cancelAll();
+  }</pre></div>
+
+<h3>
+<a id="worker-1" class="anchor" href="#worker-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>worker:</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">function</span> <span class="pl-en">parallelTest</span>() {
+  importScripts(<span class="pl-s"><span class="pl-pds">'</span>../../dist/WorkerIO.js<span class="pl-pds">'</span></span>);
+  <span class="pl-k">var</span> inter<span class="pl-k">=</span> <span class="pl-c1">null</span> ;
+  <span class="pl-k">var</span> testWorker <span class="pl-k">=</span> <span class="pl-c1">IO</span>.Worker();
+  testWorker.<span class="pl-c1">start</span>(<span class="pl-k">function</span>(<span class="pl-smi">socket</span>){
+    socket.on(<span class="pl-s"><span class="pl-pds">"</span>runParallel<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>runParallel: <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+      calc_data(data);
+    }).on(<span class="pl-s"><span class="pl-pds">"</span>broadcasting<span class="pl-pds">"</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>broadcasting: <span class="pl-pds">"</span></span><span class="pl-k">+</span>data);
+      });
+
+    <span class="pl-c1">setInterval</span>(<span class="pl-k">function</span> () {
+      socket.emit(<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>!!!Not finished yet<span class="pl-pds">"</span></span>)
+    },<span class="pl-c1">5000</span>);
+    <span class="pl-k">function</span> <span class="pl-en">calc_data</span>(<span class="pl-smi">data</span>) {
+      inter <span class="pl-k">=</span>  <span class="pl-c1">setInterval</span>(<span class="pl-k">function</span>(){
+           <span class="pl-k">var</span> calcData <span class="pl-k">=</span> data<span class="pl-k">*</span><span class="pl-c1">5</span>
+           socket.returnResult(calcData);
+        }, data<span class="pl-k">*</span><span class="pl-c1">1000</span>);
+
+    }
+  })
+}
+parallelTest();</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/maty21/WorkerIO">Workerio</a> is maintained by <a href="https://github.com/maty21">maty21</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-57647503-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
+
